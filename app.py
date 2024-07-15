@@ -138,8 +138,8 @@ elif selected == "Dados Estatísticos":
 
   # Total de linhas
     total_linhas = len(filtered_df)
-    st.markdown(f"<h3 style='text-align: center;'>Total de Manifestações: <strong>{
-                total_linhas}</strong></h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: center;'>Total de Manifestações: <strong>{total_linhas}</strong></h3>", unsafe_allow_html=True)
+
 
     # Top 10 Ouvidorias
     top_10_ouvidorias = filtered_df['NOME_OUVIDORIA_DESTINO'].value_counts().head(
