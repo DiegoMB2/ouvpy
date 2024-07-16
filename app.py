@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from io import BytesIO
-import matplotlib.pyplot as plt
+
 
 # Função para carregar a planilha XLSX
 def load_excel(file_path):
@@ -87,23 +87,9 @@ top_10_ouvidorias.index.name = 'Ranking'
 st.write("Top 10 Ouvidorias (NOME_OUVIDORIA_DESTINO):")
 st.dataframe(top_10_ouvidorias)
 
-# Plotar gráfico do Top 10 Ouvidorias
-fig, ax = plt.subplots()
-top_10_ouvidorias.plot(kind='bar', x='NOME_OUVIDORIA_DESTINO', y='COUNT', legend=False, ax=ax)
-ax.set_title('Top 10 Ouvidorias')
-ax.set_xlabel('Nome da Ouvidoria')
-ax.set_ylabel('Contagem')
-st.pyplot(fig)
 
 # Total de manifestações por CANAL_DE_ENTRADA
 manifestacoes_por_canal = filtered_df['CANAL_DE_ENTRADA'].value_counts()
 st.write("Total de Manifestações por CANAL_DE_ENTRADA:")
 st.dataframe(manifestacoes_por_canal)
 
-# Plotar gráfico de manifestações por CANAL_DE_ENTRADA
-fig, ax = plt.subplots()
-manifestacoes_por_canal.plot(kind='bar', ax=ax)
-ax.set_title('Total de Manifestações por CANAL_DE_ENTRADA')
-ax.set_xlabel('Canal de Entrada')
-ax.set_ylabel('Contagem')
-st.pyplot(fig)
