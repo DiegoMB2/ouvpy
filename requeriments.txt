@@ -3,3 +3,4 @@ streamlit
 streamlit-option-menu
 xlsxwriter
 io
+openpyxl
