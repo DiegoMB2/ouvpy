@@ -8,11 +8,15 @@ st.set_page_config(page_title="Análise de Planilha",
                    page_icon=":bar_chart:", layout="wide")
 
 # Função para carregar a planilha XLSX
+
+
 @st.cache_data
 def load_excel(file_path):
     return pd.read_excel(file_path)
 
 # Função para converter DataFrame em Excel e obter bytes
+
+
 def to_excel(df):
     output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
@@ -20,14 +24,18 @@ def to_excel(df):
     processed_data = output.getvalue()
     return processed_data
 
+
 # Carregar a planilha
 df = load_excel('Bancão.xlsx')
 
 # Converter colunas de data
 df['DATA_MANIFESTACAO'] = pd.to_datetime(df['DATA_MANIFESTACAO'])
-df['PRAZO_CONCLUSAO_PONTO_DE_RESPOSTA'] = pd.to_datetime(df['PRAZO_CONCLUSAO_PONTO_DE_RESPOSTA'])
-df['PRAZO_DE_CONCLUSÃO_OUVIDORIA'] = pd.to_datetime(df['PRAZO_DE_CONCLUSÃO_OUVIDORIA'])
-df['ÚLTIMO_ACOMPANHAMENTO_PONTO_DE_RESPOSTA'] = pd.to_datetime(df['ÚLTIMO_ACOMPANHAMENTO_PONTO_DE_RESPOSTA'])
+df['PRAZO_CONCLUSAO_PONTO_DE_RESPOSTA'] = pd.to_datetime(
+    df['PRAZO_CONCLUSAO_PONTO_DE_RESPOSTA'])
+df['PRAZO_DE_CONCLUSÃO_OUVIDORIA'] = pd.to_datetime(
+    df['PRAZO_DE_CONCLUSÃO_OUVIDORIA'])
+df['ÚLTIMO_ACOMPANHAMENTO_PONTO_DE_RESPOSTA'] = pd.to_datetime(
+    df['ÚLTIMO_ACOMPANHAMENTO_PONTO_DE_RESPOSTA'])
 
 # Menu de navegação
 with st.sidebar:
@@ -78,7 +86,8 @@ for column, selected_values in filters.items():
                 (filtered_df[column] <= pd.to_datetime(selected_values[1]))
             ]
         else:
-            filtered_df = filtered_df[filtered_df[column].isin(selected_values)]
+            filtered_df = filtered_df[filtered_df[column].isin(
+                selected_values)]
 
 # Página Relatório
 if selected == "Relatório":
@@ -90,10 +99,14 @@ if selected == "Relatório":
 
     # Exibir os dados filtrados
     st.header("Dados da Planilha")
-    filtered_df['DATA_MANIFESTACAO'] = filtered_df['DATA_MANIFESTACAO'].dt.strftime('%d/%m/%Y')
-    filtered_df['PRAZO_CONCLUSAO_PONTO_DE_RESPOSTA'] = filtered_df['PRAZO_CONCLUSAO_PONTO_DE_RESPOSTA'].dt.strftime('%d/%m/%Y')
-    filtered_df['PRAZO_DE_CONCLUSÃO_OUVIDORIA'] = filtered_df['PRAZO_DE_CONCLUSÃO_OUVIDORIA'].dt.strftime('%d/%m/%Y')
-    filtered_df['ÚLTIMO_ACOMPANHAMENTO_PONTO_DE_RESPOSTA'] = filtered_df['ÚLTIMO_ACOMPANHAMENTO_PONTO_DE_RESPOSTA'].dt.strftime('%d/%m/%Y')
+    filtered_df['DATA_MANIFESTACAO'] = filtered_df['DATA_MANIFESTACAO'].dt.strftime(
+        '%d/%m/%Y')
+    filtered_df['PRAZO_CONCLUSAO_PONTO_DE_RESPOSTA'] = filtered_df['PRAZO_CONCLUSAO_PONTO_DE_RESPOSTA'].dt.strftime(
+        '%d/%m/%Y')
+    filtered_df['PRAZO_DE_CONCLUSÃO_OUVIDORIA'] = filtered_df['PRAZO_DE_CONCLUSÃO_OUVIDORIA'].dt.strftime(
+        '%d/%m/%Y')
+    filtered_df['ÚLTIMO_ACOMPANHAMENTO_PONTO_DE_RESPOSTA'] = filtered_df['ÚLTIMO_ACOMPANHAMENTO_PONTO_DE_RESPOSTA'].dt.strftime(
+        '%d/%m/%Y')
 
     st.write(filtered_df)
 
@@ -123,20 +136,23 @@ if selected == "Relatório":
 elif selected == "Dados Estatísticos":
     st.title("Dados Estatísticos - Sistema Ouvidor SUS")
 
-    # Total de linhas
+  # Total de linhas
     total_linhas = len(filtered_df)
-    st.markdown(f"<h3 style='text-align: center;'>Total de Manifestações: <strong>{total_linhas}</strong></h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: center;'>Total de Manifestações: <strong>{
+                total_linhas}</strong></h3>", unsafe_allow_html=True)
 
     # Top 10 Ouvidorias
-    top_10_ouvidorias = filtered_df['NOME_OUVIDORIA_DESTINO'].value_counts().head(10).reset_index()
+    top_10_ouvidorias = filtered_df['NOME_OUVIDORIA_DESTINO'].value_counts().head(
+        10).reset_index()
     top_10_ouvidorias.columns = ['NOME_OUVIDORIA_DESTINO', 'COUNT']
     # Adiciona uma coluna de índice começando de 1
     top_10_ouvidorias.index += 1
     top_10_ouvidorias.index.name = 'Ranking'
 
-    # Exibir o DataFrame com um estilo que ajusta as larguras das colunas
+# Exibir o DataFrame com um estilo que ajusta as larguras das colunas
     st.write("Top 10 Ouvidorias (NOME_OUVIDORIA_DESTINO):")
-    st.dataframe(top_10_ouvidorias.style.set_table_attributes('style="width:100%;"'))
+    st.dataframe(top_10_ouvidorias.style.set_table_attributes(
+        'style="width:100%;"'))
 
     # Total de manifestações por ESFERA_DESTINO
     manifestacoes_por_esfera = filtered_df['ESFERA_DESTINO'].value_counts()
